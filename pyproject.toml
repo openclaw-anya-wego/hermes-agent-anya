@@ -387,8 +387,9 @@ exclude-newer = "14 days"
 # aiohttp, cryptography: same shape — the advisory fixes are newer than the
 # 14-day window, so the resolver cannot see them without an exception.
 # certifi: 2026.10.19 removes the roots behind the eMudhra intermediate key
-# compromise (https://emudhra.we-have-a-problem.com/). Remove after 2026-11-03.
-exclude-newer-package = { vercel = false, nemo-relay = false, huggingface_hub = false, h2 = false, aiohttp = false, cryptography = false, certifi = false }
+# compromise (https://emudhra.we-have-a-problem.com/). The dated cutoff admits
+# that release and nothing newer. Remove after 2026-11-03.
+exclude-newer-package = { vercel = false, nemo-relay = false, huggingface_hub = false, h2 = false, aiohttp = false, cryptography = false, certifi = "2026-10-21T00:00:00Z" }
 
 [tool.setuptools]
 # Top-level single-file modules (not packages). Without this, uv2nix's

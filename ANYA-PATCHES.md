@@ -227,12 +227,13 @@ The bug is present in 3.0.11, 3.0.12, and `main`.
 with no CT entry, so any holder of the leaked keys can impersonate a host.
 
 **Fix.** Pin `certifi==2026.10.19`. The 14-day `exclude-newer` window hides that
-release, so `certifi = false` exempts it.
+release, so `certifi = "2026-10-21T00:00:00Z"` exempts it. The date admits
+that release and no later one, so the cooldown still holds for new releases.
 
 **Test.** Run the four probes from the incident page with `requests`. All four
 must fail with an SSL error.
 
-Delete this entry, and the `certifi = false` exception, after the next upstream
+Delete this entry, and the `certifi` exception, after the next upstream
 merge or after 2026-11-03.
 
 ### Known, not yet patched

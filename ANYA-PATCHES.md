@@ -216,6 +216,26 @@ result is a list of message excerpts.
 **Do not upgrade the Honcho server to fix this.** The server fix is not merged.
 The bug is present in 3.0.11, 3.0.12, and `main`.
 
+### 2. certifi trusts the compromised eMudhra intermediates
+
+- Files: `pyproject.toml` (pin and `exclude-newer-package`), `uv.lock`
+- Incident: https://emudhra.we-have-a-problem.com/ (2026-10-20)
+- Upstream: already pins `certifi==2026.10.19` with the same exception
+
+**Symptom.** With `certifi==2026.5.20`, `requests` returns HTTP 200 from
+`https://dv-g3b-noct-emudhra.we-have-a-problem.com/`. That probe serves a chain
+with no CT entry, so any holder of the leaked keys can impersonate a host.
+
+**Fix.** Pin `certifi==2026.10.19`. The 14-day `exclude-newer` window hides that
+release, so `certifi = "2026-10-21T00:00:00Z"` exempts it. The date admits
+that release and no later one, so the cooldown still holds for new releases.
+
+**Test.** Run the four probes from the incident page with `requests`. All four
+must fail with an SSL error.
+
+Delete this entry, and the `certifi` exception, after the next upstream
+merge or after 2026-11-03.
+
 ### Known, not yet patched
 
 | Problem | Upstream |
